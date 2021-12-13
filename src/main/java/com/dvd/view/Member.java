@@ -4,13 +4,7 @@ public class Member {
 
     private String uname, password, email, phone;
 
-
-    public Member() {
-        super();
-    }
-
     public Member(String uname, String password, String email, String phone) {
-        super();
         this.uname = uname;
         this.password = password;
         this.email = email;

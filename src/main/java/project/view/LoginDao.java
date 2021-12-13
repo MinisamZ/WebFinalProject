@@ -52,11 +52,11 @@ public class LoginDao {
             ResultSet resultSet = prSt.executeQuery();
 
             if (resultSet.next()) {
-                MemberDao c = new MemberDao();
-                c.uname = resultSet.getString("uname");
-                c.email = resultSet.getString("email");
-                c.phone = resultSet.getString("phone");
-                result = "Hello " + c.uname + "! Your phone: " + c.phone + " and mail: " + c.email;
+                Member c = new Member(null,null,null,null);
+                c.setUname(resultSet.getString("uname"));
+                c.setEmail(resultSet.getString("email"));
+                c.setPhone(resultSet.getString("phone"));
+                result = "Hello " + c.getUname() + "! Your phone: " + c.getPhone() + " and mail: " + c.getEmail();
                 System.out.println("asdasd " + c.toString() + " asdasd");
             } else {
                 System.out.println(false);

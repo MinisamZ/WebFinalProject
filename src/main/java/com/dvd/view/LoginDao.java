@@ -5,8 +5,8 @@ import java.sql.*;
 public class LoginDao {
 
     private String dbUrl = "jdbc:mysql://localhost/userdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8";
-    private String dbUname = "sam2";
-    private String dbPassword = "Yys0mIf0AZb0wnth";
+    private String dbUname = "sam";
+    private String dbPassword = "sam";
     private String dbDriver = "com.mysql.cj.jdbc.Driver";
 
     public void loadDriver(String dbDriver) {
@@ -48,18 +48,17 @@ public class LoginDao {
 //            PreparedStatement ps;
 //            ps =
             PreparedStatement prSt = con.prepareStatement(sql);
-            result += prSt.executeQuery();
+//            result += prSt.executeQuery();
             ResultSet resultSet = prSt.executeQuery();
 
-            System.out.println("zzz");
-            System.out.println(resultSet.toString());
-            System.out.println("zzz");
-
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 MemberDao c = new MemberDao();
-                c.uname = resultSet.getString("umane");
+                c.uname = resultSet.getString("uname");
+                c.email = resultSet.getString("email");
+                c.phone = resultSet.getString("phone");
+                result = "Hello " + c.uname + "! Your phone: " + c.phone + " and mail: " + c.email;
                 System.out.println("asdasd " + c.toString() + " asdasd");
-            }else {
+            } else {
                 System.out.println(false);
             }
 //            while (resultSet.next()) {

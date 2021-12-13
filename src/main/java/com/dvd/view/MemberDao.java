@@ -15,6 +15,8 @@ public class MemberDao {
         return "MemberDao{" +
                 "uname=" + uname +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 

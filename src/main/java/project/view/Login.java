@@ -1,4 +1,4 @@
-package com.dvd.view;
+package project.view;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

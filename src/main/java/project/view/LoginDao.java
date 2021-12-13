@@ -1,4 +1,4 @@
-package com.dvd.view;
+package project.view;
 
 import java.sql.*;
 

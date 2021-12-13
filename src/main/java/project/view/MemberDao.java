@@ -1,4 +1,4 @@
-package com.dvd.view;
+package project.view;
 
 public class MemberDao {
     public String uname, password, email, phone;

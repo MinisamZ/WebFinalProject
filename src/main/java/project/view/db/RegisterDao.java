@@ -1,7 +1,8 @@
-package project.view;
+package project.view.db;
+
+import project.view.Member;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 

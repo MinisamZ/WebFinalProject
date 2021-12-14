@@ -1,5 +1,7 @@
 package project.view;
 
+import project.view.db.RegisterDao;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

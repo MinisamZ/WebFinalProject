@@ -5,11 +5,11 @@
          version="4.0">
     <display-name>News space portal</display-name>
     <welcome-file-list>
-        <welcome-file>project.view.MainPageServlet</welcome-file>
+        <welcome-file>project.view.servlet.MainPageServlet</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>MainPage</servlet-name>
-        <servlet-class>project.view.MainPageServlet</servlet-class>
+        <servlet-class>project.view.servlet.MainPageServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MainPage</servlet-name>
@@ -17,7 +17,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>RegisterFormServlet</servlet-name>
-        <servlet-class>project.view.RegisterFormServlet</servlet-class>
+        <servlet-class>project.view.servlet.RegisterFormServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterFormServlet</servlet-name>
@@ -25,7 +25,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>LoginFormServlet</servlet-name>
-        <servlet-class>project.view.LoginFormServlet</servlet-class>
+        <servlet-class>project.view.servlet.LoginFormServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginFormServlet</servlet-name>
@@ -33,7 +33,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>TestFormServlet</servlet-name>
-        <servlet-class>project.view.TestFormServlet</servlet-class>
+        <servlet-class>project.view.servlet.TestFormServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestFormServlet</servlet-name>

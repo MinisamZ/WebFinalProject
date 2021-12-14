@@ -1,4 +1,4 @@
-package project.view;
+package project.view.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

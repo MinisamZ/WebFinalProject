@@ -1,4 +1,6 @@
-package project.view;
+package project.view.db;
+
+import project.view.Member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

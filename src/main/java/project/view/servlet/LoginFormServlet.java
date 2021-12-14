@@ -1,4 +1,4 @@
-package project.view;
+package project.view.servlet;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

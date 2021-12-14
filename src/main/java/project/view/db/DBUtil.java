@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class DBUtil {
     // JDBC URL, username and password of MySQL server
-    private final String url = "jdbc:mysql://localhost/userdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    private final String url = "jdbc:mysql://localhost/ns_portal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8";
     private final String user = "sam";
     private final String password = "sam";
 

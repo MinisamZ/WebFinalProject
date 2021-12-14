@@ -64,7 +64,7 @@ public class LoginFormServlet extends HttpServlet {
                     "        <br>\n" +
                     "</header>\n" +
                     "<main>\n" +
-                    "  <form>\n" +
+                    "  <form action = \"Login\" method = \"post\">\n" +
                     "    <label for=\"uname\" >Username:</label><br>\n" +
                     "      <input type=\"text\"  id=\"uname\" name=\"uname\" placeholder=\"Enter Username\" ><br>\n" +
                     "       <br>\n" +

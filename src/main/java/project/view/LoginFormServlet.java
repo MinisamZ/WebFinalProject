@@ -25,28 +25,32 @@ public class LoginFormServlet extends HttpServlet {
         // Specify the content type is HTML
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        // Generate the HTML response
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Login</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>Login</h1>");
-        out.println("<form action = \"Login\" method = \"post\">");
-        out.println("<div class=\"container\">");
-        out.println("<label for=\"uname\"><b> Username </b></label>");
-        out.println("<input type = \"text\" placeholder = \"Enter Username\" name = \"uname\" required = \"\">");
-        out.println("<br>");
-        out.println("<br>");
-        out.println("<label for=\"password\"><b> Password </b></label>");
-        out.println("<input type = \"password\" placeholder = \"Enter Password\" name = \"password\" required = \"\" >");
-        out.println("<button type = \"submit\"> Login </button>");
-        out.println("</div >");
-        out.println("</form>");
-        out.println("</body>");
-        out.println("</html>");
+        try {
+            // Generate the HTML response
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Login</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Login</h1>");
+            out.println("<form action = \"Login\" method = \"post\">");
+            out.println("<div class=\"container\">");
+            out.println("<label for=\"uname\"><b> Username </b></label>");
+            out.println("<input type = \"text\" placeholder = \"Enter Username\" name = \"uname\" required = \"\">");
+            out.println("<br>");
+            out.println("<br>");
+            out.println("<label for=\"password\"><b> Password </b></label>");
+            out.println("<input type = \"password\" placeholder = \"Enter Password\" name = \"password\" required = \"\" >");
+            out.println("<button type = \"submit\"> Login </button>");
+            out.println("</div >");
+            out.println("</form>");
+            out.println("</body>");
+            out.println("</html>");
+        } finally {
+            out.close();
+        }
+        
     }
 }
 

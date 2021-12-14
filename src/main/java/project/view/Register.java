@@ -1,6 +1,7 @@
 package project.view;
 
 import project.view.db.RegisterDao;
+import project.view.model.Member;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

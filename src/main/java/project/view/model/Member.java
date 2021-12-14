@@ -1,4 +1,4 @@
-package project.view;
+package project.view.model;
 
 public class Member {
 

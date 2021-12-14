@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ArticlesDao {
 
-    public ResultSet request(String sqlMain) {
+    public static ResultSet request(String sqlMain) {
         DBUtil dbUtil = new DBUtil();
         Connection con = dbUtil.getConnection();
         String result = "Data received successfully ";

@@ -1,10 +1,15 @@
 package project.view.servlet;
 
+import project.view.db.ArticlesDao;
+import project.view.model.Articles;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class MainPageServlet extends HttpServlet {
@@ -20,6 +25,7 @@ public class MainPageServlet extends HttpServlet {
                              HttpServletResponse response)
             throws IOException {
         response.setContentType("text/html; charset=UTF-8");
+        ResultSet resultSet = null;
         PrintWriter out = response.getWriter();
         out.println("\n" +
                 "<!DOCTYPE html>\n" +
@@ -259,7 +265,7 @@ public class MainPageServlet extends HttpServlet {
                 "      </div>\n" +
                 "      <nav class=\"header__top__menu\">\n" +
                 "        <ul>\n" +
-                "          <li><a href=\"/\">Главная</a></li>\n" +
+                "          <li><a href=\"/main\">Главная</a></li>\n" +
                 "          <li><a href=\"/pages/about_me.php\">Обо мне</a></li>\n" +
                 "          <li><a href=\"http://vk.com/gorgulev2266\" target=\"_blank\">Я Вконтакте</a></li>\n" +
                 "        </ul>\n" +
@@ -270,12 +276,12 @@ public class MainPageServlet extends HttpServlet {
                 "    <div class=\"container\">\n" +
                 "      <nav>\n" +
                 "        <ul>\n" +
-                "        <li><a href=\"/articles.php?categorie=1\" >Космос</a></li>\n" +
-                "        <li><a href=\"/articles.php?categorie=2\" >Программирование</a></li>\n" +
-                "        <li><a href=\"/articles.php?categorie=3\" >Игры</a></li>\n" +
+                "        <li><a href=\"/articles.categorie=1\" >Космос</a></li>\n" +
+                "        <li><a href=\"/articles.categorie=2\" >Программирование</a></li>\n" +
+                "        <li><a href=\"/articles.categorie=3\" >Игры</a></li>\n" +
                 "\t\t<li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li>\n" +
-                "        <li><a href=\"/login \" >Войти</a></li>\n" +
-                "        <li><a href=\"/register \" >Зарегестрироваться</a></li>\n" +
+                "        <li><a href=\"/login\" >Войти</a></li>\n" +
+                "        <li><a href=\"/register\" >Зарегестрироваться</a></li>\n" +
                 "\t\t</ul>\t\t\n" +
                 "      </nav>\n" +
                 "    </div>\n" +
@@ -286,242 +292,182 @@ public class MainPageServlet extends HttpServlet {
                 "        <div class=\"row\">\n" +
                 "          <section class=\"content__left col-md-8\">\n" +
                 "            <div class=\"block\">\n" +
-                "              <a href=\"/articles.php\">Все записи</a>\n" +
+                "              <a href=\"/articles\">Все записи</a>\n" +
                 "              <h3>Новейшее_в_блоге</h3>\n" +
                 "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n" +
-                "                                      <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test10.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=59\"> What is Lorem Ipsum?</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test7.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=58\"> SpaceX вывела в космос еще одну партию спутников Starlink</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Американская компания Илона Маска SpaceX вывела на орбиту 60 интернет-спутников Starlink.Источник: S...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test6.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=57\"> Базз Лайтер на орбите и часы из метеорита</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">60-летие полета Юрия Гагарина в космос, регулярные информационные поводы от Илона Маска и Джеффа Без...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test5.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=55\"> Полет в космос с богатейшим человеком мира </a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Место на космическом корабле New Shepard для полета в космос с богатейшим человеком мира Джеффом Без...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test2.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=3\"> НАСА научит астронавтов стирать одежду в космосе</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">НАСА объединилось с крупным производителем стирального порошка, чтобы разработать методы стирки одеж...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test3.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=2\"> Where can I get some?</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alter...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test1.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=1\"> What is Lorem Ipsum?</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                     \n" +
-                "                </div>\n" +
+                "                <div class=\"articles articles__horizontal\">\n");
+
+        resultSet = ArticlesDao.request("SELECT * FROM `articles` ORDER BY `pubdate` DESC LIMIT 10");
+        try {
+            while (resultSet.next()) {
+                Articles c = new Articles();
+                c.id = resultSet.getString("id");
+                c.title = resultSet.getString("title");
+                c.image = resultSet.getString("image");
+                c.text = resultSet.getString("text");
+                c.categorie_id = resultSet.getString("categorie_id");
+                out.println(
+                        "<article class=\"article\">\n" +
+                                "<div class=\"article__image\" style=\"background-image: url(");
+                out.println(c.image);
+                out.println(");\"></div>\n" +
+                        "<div class=\"article__info\">\n" +
+                        "<a href=\"/article.php?id=");
+                out.println(c.id + "\"> " + c.title + "</a>\n");
+                out.println("<div class=\"article__info__meta\">\n" +
+                        "<small>Категория: <a href=\"/articles.php?categorie=" + c.categorie_id + "\"> Программирование</a></small>\n" +
+                        "</div>\n" +
+                        "<div class=\"article__info__preview\">" + c.text.substring(0, 99) + "...</div>\n" +
+                        "</div>\n" +
+                        "</article>\n");
+
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+        out.println("                </div>\n" +
                 "              </div>\n" +
                 "            </div>\n" +
                 "            <div class=\"block\">\n" +
                 "              <a href=\"/articles.php?categorie=1\">Все записи</a>\n" +
                 "              <h3>Космос [Новейшее]</h3>\n" +
                 "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n" +
-                "                                      <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test7.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=58\"> SpaceX вывела в космос еще одну партию спутников Starlink</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Американская компания Илона Маска SpaceX вывела на орбиту 60 интернет-спутников Starlink.Источник: S...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test6.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=57\"> Базз Лайтер на орбите и часы из метеорита</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">60-летие полета Юрия Гагарина в космос, регулярные информационные поводы от Илона Маска и Джеффа Без...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test5.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=55\"> Полет в космос с богатейшим человеком мира </a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Место на космическом корабле New Shepard для полета в космос с богатейшим человеком мира Джеффом Без...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test2.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=3\"> НАСА научит астронавтов стирать одежду в космосе</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">НАСА объединилось с крупным производителем стирального порошка, чтобы разработать методы стирки одеж...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                     \n" +
-                "                </div>\n" +
+                "                <div class=\"articles articles__horizontal\">\n");
+
+
+        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 1 ORDER BY `id` DESC LIMIT 10");
+        try {
+            while (resultSet.next()) {
+                Articles c = new Articles();
+                c.id = resultSet.getString("id");
+                c.title = resultSet.getString("title");
+                c.image = resultSet.getString("image");
+                c.text = resultSet.getString("text");
+                c.categorie_id = resultSet.getString("categorie_id");
+                out.println("<article class=\"article\">\n" +
+                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
+                        "<div class=\"article__info\">\n" +
+                        "<a href=\"/article.php?id=" + c.id + "\"> " + c.title + "</a>\n" +
+                        "<div class=\"article__info__meta\">\n" +
+                        "<small>Категория: <a href=\"/articles.php?categorie=" + c.categorie_id + "\"> Космос</a></small>\n" +
+                        "</div>\n" +
+                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
+                        "</div>\n" +
+                        "</article>\n");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        out.println("                </div>\n" +
                 "              </div>\n" +
                 "            </div>\n" +
                 "            <div class=\"block\">\n" +
                 "              <a href=\"/articles.php?categorie=2\">Все записи</a>\n" +
                 "              <h3>Программирование [Новейшее]</h3>\n" +
                 "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n" +
-                "                                      <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test10.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=59\"> What is Lorem Ipsum?</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test3.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=2\"> Where can I get some?</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alter...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                                        <article class=\"article\">\n" +
-                "                      <div class=\"article__image\" style=\"background-image: url(/static/images/test1.jpg);\"></div>\n" +
-                "                      <div class=\"article__info\">\n" +
-                "                        <a href=\"/article.php?id=1\"> What is Lorem Ipsum?</a>\n" +
-                "                        <div class=\"article__info__meta\">\n" +
-                "                                                    <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"article__info__preview\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...</div>\n" +
-                "                      </div>\n" +
-                "                    </article>\n" +
-                "                     \n" +
+                "                <div class=\"articles articles__horizontal\">\n");
+
+        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 2 ORDER BY `id` DESC LIMIT 10");
+        try {
+            while (resultSet.next()) {
+                Articles c = new Articles();
+                c.id = resultSet.getString("id");
+                c.title = resultSet.getString("title");
+                c.image = resultSet.getString("image");
+                c.text = resultSet.getString("text");
+                c.categorie_id = resultSet.getString("categorie_id");
+                out.println("<article class=\"article\">\n" +
+                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
+                        "<div class=\"article__info\">\n" +
+                        "<a href=\"/article.php?id=" + c.id + "\"> " + c.title + "</a>\n" +
+                        "<div class=\"article__info__meta\">\n" +
+                        "<small>Категория: <a href=\"/articles.php?categorie=" + c.categorie_id + "\"> Программирование</a></small>\n" +
+                        "</div>\n" +
+                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
+                        "</div>\n" +
+                        "</article>\n");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        out.println(
                 "                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "          </section>\n" +
-                "          <section class=\"content__right col-md-4\">\n" +
-                "            <div class=\"block\">\n" +
-                "  <h3>Мы_знаем</h3>\n" +
-                "  <div class=\"block__content\">\n" +
-                "    <iframe style=\"background:transparent !important\" scrolling=\"no\" frameborder=\"0\" allowtransparency=\"true\" width=\"320\" height=\"320\" src=\"//ra.revolvermaps.com/w/6/a/c2.php?i=02op3nb0crr&amp;m=7&amp;s=320&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80\"></iframe>\n" +
-                "  </div>\n" +
-                "</div>\n" +
-                "<div class=\"block\">\n" +
-                "  <h3>Топ читаемых статей</h3>\n" +
-                "  <div class=\"block__content\">\n" +
-                "    <div class=\"articles articles__vertical\">\n" +
-                "              <article class=\"article\">\n" +
-                "          <div class=\"article__image\" style=\"background-image: url(/static/images/test3.jpg);\"></div>\n" +
-                "          <div class=\"article__info\">\n" +
-                "            <a href=\"/article.php?id=2\"> Where can I get some?</a>\n" +
-                "            <div class=\"article__info__meta\">\n" +
-                "                            <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "            </div>\n" +
-                "            <div class=\"article__info__preview\">There are many variations of passages of Lorem Ips...</div>\n" +
-                "          </div>\n" +
-                "        </article>\n" +
-                "                <article class=\"article\">\n" +
-                "          <div class=\"article__image\" style=\"background-image: url(/static/images/test7.jpg);\"></div>\n" +
-                "          <div class=\"article__info\">\n" +
-                "            <a href=\"/article.php?id=58\"> SpaceX вывела в космос еще одну партию спутников Starlink</a>\n" +
-                "            <div class=\"article__info__meta\">\n" +
-                "                            <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "            </div>\n" +
-                "            <div class=\"article__info__preview\">Американская компания Илона Маска SpaceX вывела на...</div>\n" +
-                "          </div>\n" +
-                "        </article>\n" +
-                "                <article class=\"article\">\n" +
-                "          <div class=\"article__image\" style=\"background-image: url(/static/images/test5.jpg);\"></div>\n" +
-                "          <div class=\"article__info\">\n" +
-                "            <a href=\"/article.php?id=55\"> Полет в космос с богатейшим человеком мира </a>\n" +
-                "            <div class=\"article__info__meta\">\n" +
-                "                            <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "            </div>\n" +
-                "            <div class=\"article__info__preview\">Место на космическом корабле New Shepard для полет...</div>\n" +
-                "          </div>\n" +
-                "        </article>\n" +
-                "                <article class=\"article\">\n" +
-                "          <div class=\"article__image\" style=\"background-image: url(/static/images/test2.jpg);\"></div>\n" +
-                "          <div class=\"article__info\">\n" +
-                "            <a href=\"/article.php?id=3\"> НАСА научит астронавтов стирать одежду в космосе</a>\n" +
-                "            <div class=\"article__info__meta\">\n" +
-                "                            <small>Категория: <a href=\"/articles.php?categorie=1\"> Космос</a></small>\n" +
-                "            </div>\n" +
-                "            <div class=\"article__info__preview\">НАСА объединилось с крупным производителем стираль...</div>\n" +
-                "          </div>\n" +
-                "        </article>\n" +
-                "                <article class=\"article\">\n" +
-                "          <div class=\"article__image\" style=\"background-image: url(/static/images/test1.jpg);\"></div>\n" +
-                "          <div class=\"article__info\">\n" +
-                "            <a href=\"/article.php?id=1\"> What is Lorem Ipsum?</a>\n" +
-                "            <div class=\"article__info__meta\">\n" +
-                "                            <small>Категория: <a href=\"/articles.php?categorie=2\"> Программирование</a></small>\n" +
-                "            </div>\n" +
-                "            <div class=\"article__info__preview\">Lorem Ipsum is simply dummy text of the printing a...</div>\n" +
-                "          </div>\n" +
-                "        </article>\n" +
-                "    </div>\n" +
+                        "              </div>\n" +
+                        "            </div>\n" +
+                        "          </section>\n" +
+                        "          <section class=\"content__right col-md-4\">\n" +
+                        "            <div class=\"block\">\n" +
+                        "  <h3>Мы_знаем</h3>\n" +
+                        "  <div class=\"block__content\">\n" +
+                        "    <iframe style=\"background:transparent !important\" scrolling=\"no\" frameborder=\"0\" allowtransparency=\"true\" width=\"320\" height=\"320\" src=\"//ra.revolvermaps.com/w/6/a/c2.php?i=02op3nb0crr&amp;m=7&amp;s=320&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80\"></iframe>\n" +
+                        "  </div>\n" +
+                        "</div>\n" +
+                        "<div class=\"block\">\n" +
+                        "  <h3>Топ читаемых статей</h3>\n" +
+                        "  <div class=\"block__content\">\n" +
+                        "    <div class=\"articles articles__vertical\">\n");
+
+        resultSet = ArticlesDao.request("SELECT * FROM `articles` ORDER BY `views` DESC LIMIT 10");
+        try {
+            while (resultSet.next()) {
+                Articles c = new Articles();
+                c.id = resultSet.getString("id");
+                c.title = resultSet.getString("title");
+                c.image = resultSet.getString("image");
+                c.text = resultSet.getString("text");
+                c.categorie_id = resultSet.getString("categorie_id");
+                out.println("<article class=\"article\">\n" +
+                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
+                        "<div class=\"article__info\">\n" +
+                        "<a href=\"/article.php?id=" + c.id + "\"> " + c.title + "</a>\n" +
+                        "<div class=\"article__info__meta\">\n" +
+                        "<small>Категория: <a href=\"/articles.php?categorie=" + c.categorie_id + "\"> Программирование</a></small>\n" +
+                        "</div>\n" +
+                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 50) + "...</div>\n" +
+                        "</div>\n" +
+                        "</article>\n");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        out.println("</div>\n" +
                 "  </div>\n" +
                 "</div>\n" +
                 "<div class=\"block\">\n" +
                 "  <h3>Комментарии</h3>\n" +
                 "  <div class=\"block__content\">\n" +
-                "    <div class=\"articles articles__vertical\">\n" +
-                "              <article class=\"article\">\n" +
+                "    <div class=\"articles articles__vertical\">\n");
+
+//        resultSet = ArticlesDao.request("SELECT * FROM `comments` ORDER BY `pubdate` DESC LIMIT 5");
+//        try {
+//            while (resultSet.next()) {
+//                Сomments c = new Сomments();
+//                c.id = resultSet.getString("id");
+//                c.author = resultSet.getString("author");
+//                c.nickname = resultSet.getString("nickname");
+//                c.email = resultSet.getString("email");
+//                c.text = resultSet.getString("text");
+//                c.pubdate = resultSet.getString("pubdate");
+//                c.articles_id = resultSet.getString("articles_id");
+//                out.println("<article class=\"article\">\n" +
+//                        "<div class=\"article__image\" style=\"background-image: url(" + MD5Util.md5Hex(c.email) + ");\"></div>\n" +
+//                        "<div class=\"article__info\">\n" +
+//                        "<a href=\"/article.php?id=" + c.articles_id + "\"> " + c.author + "</a>\n" +
+//                        "<div class=\"article__info__meta\">\n" +
+//                        "</div>\n" +
+//                        "<div class=\"article__info__preview\">" + c.text.substring(0, 50) + "...</div>\n" +
+//                        "</div>\n" +
+//                        "</article>\n");
+//            }
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+
+        out.println("<article class=\"article\">\n" +
                 "          <div class=\"article__image\" style=\"background-image: url(https://gravatar.com/avatar/a0400e6a9bf925baf4a6593f980171d5?s=125);\"></div>\n" +
                 "          <div class=\"article__info\">\n" +
                 "            <a href=\"/article.php?id=55\"> Alex</a>\n" +
@@ -545,8 +491,7 @@ public class MainPageServlet extends HttpServlet {
                 "            <a href=\"/article.php?id=2\"> Алекс</a>\n" +
                 "            <div class=\"article__info__meta\">\n" +
                 "            </div>\n" +
-                "            <div class=\"article__info__preview\">агаага\n" +
-                "...</div>\n" +
+                "            <div class=\"article__info__preview\">агаага...</div>\n" +
                 "          </div>\n" +
                 "        </article>\n" +
                 "                <article class=\"article\">\n" +
@@ -566,7 +511,8 @@ public class MainPageServlet extends HttpServlet {
                 "            </div>\n" +
                 "            <div class=\"article__info__preview\">Лол...</div>\n" +
                 "          </div>\n" +
-                "        </article>\n" +
+                "        </article>" +
+                // конец блока коментов
                 "    </div>\n" +
                 "  </div>\n" +
                 "</div>          </section>\n" +

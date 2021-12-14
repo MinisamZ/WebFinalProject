@@ -37,18 +37,12 @@ public class LoginDao {
         String sql = "select `uname`, `password`, `email`, `phone` FROM `member` WHERE(";
         System.out.println(sql);
         try {
-//            ps.setString(1, member.getUname());
-//            ps.setString(2, member.getPassword());
-
             sql += "uname = '" + member.getUname() + "'";
             sql += " AND ";
             sql += "password = '" + member.getPassword() + "')";
 
             System.out.println(sql);
-//            PreparedStatement ps;
-//            ps =
             PreparedStatement prSt = con.prepareStatement(sql);
-//            result += prSt.executeQuery();
             ResultSet resultSet = prSt.executeQuery();
 
             if (resultSet.next()) {
@@ -61,13 +55,7 @@ public class LoginDao {
             } else {
                 System.out.println(false);
             }
-//            while (resultSet.next()) {
-//            }
-//                c.password = "password";
 
-
-//                c.toString();
-//            ps.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

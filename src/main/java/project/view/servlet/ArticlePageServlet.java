@@ -13,8 +13,7 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-public class MainPageServlet extends HttpServlet {
+public class ArticlePageServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         generateView(request, response);
     }
@@ -29,6 +28,7 @@ public class MainPageServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         ResultSet resultSet = null;
         PrintWriter out = response.getWriter();
+
         out.println("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -287,128 +287,113 @@ public class MainPageServlet extends HttpServlet {
                 "      </nav>\n" +
                 "    </div>\n" +
                 "  </div>\n" +
-                "</header>\n" +
-                "    <div id=\"content\">\n" +
-                "      <div class=\"container\">\n" +
-                "        <div class=\"row\">\n" +
-                "          <section class=\"content__left col-md-8\">\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles\">Все записи</a>\n" +
-                "              <h3>Новейшее_в_блоге</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` ORDER BY `pubdate` DESC LIMIT 10");
+                "</header>\n");
+        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `id`=" + request.getParameter("id"));
         try {
-            while (resultSet.next()) {
+            if (resultSet.next()) {
+                ArticlesDao.update("UPDATE `articles` SET `views` = `views` + 1 WHERE `id`= " + request.getParameter("id"));
                 Articles c = new Articles();
                 c.id = resultSet.getString("id");
                 c.title = resultSet.getString("title");
                 c.image = resultSet.getString("image");
                 c.text = resultSet.getString("text");
+                c.views = resultSet.getString("views");
                 c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> ");
-                switch (c.categorie_id) {
-                    case ("1"):
-                        out.println(" Космос");
-                        break;
-                    case ("2"):
-                        out.println(" Программирование");
-                        break;
-                    case ("3"):
-                        out.println(" Игры");
-                        break;
-                    default:
-                        out.println(" Программирование ");
-                        break;
+                out.println("      <div id=\"content\">\n" +
+                        "        <div class=\"container\">\n" +
+                        "          <div class=\"row\">\n" +
+                        "            <section class=\"content__left col-md-8\">\n" +
+                        "              <div class=\"block\">\n" +
+                        "                <a href=\"\">" + c.views + " просмотров</a>\n" +
+                        "                <h3>" + c.title + "</h3>\n" +
+                        "                <div class=\"block__content\">\n" +
+                        "                  <img src=\"" + c.image + "\" style= \"max-width: 100%; -o-object-fit: contain; margin-bottom: 1em; \">\n" +
+                        "                  <div class=\"full-text\">" + c.text + "<div>\n" +
+                        "                  </div>\n" +
+                        "                </div>\n" +
+                        "              </div>\n" +
+                        "            </div>\n" +
+                        "<div class=\"block\">\n" +
+                        "              <a href=\"#comment-add-form\">Добавить свой</a>\n" +
+                        "              <h3>Комментарии</h3>\n" +
+                        "              <div class=\"block__content\">\n" +
+                        "                <div class=\"articles articles__vertical\">\n");
+                resultSet = ArticlesDao.request("SELECT * FROM `comments` WHERE `articles_id` = " + request.getParameter("id") + " ORDER BY `id` DESC");
+                try {
+                    if (resultSet.next()) {
+                        Сomments z = new Сomments();
+                        z.author = resultSet.getString("author");
+                        z.email = resultSet.getString("email");
+                        z.text = resultSet.getString("text");
+                        z.articles_id = resultSet.getString("articles_id");
+                        out.println("<article class=\"article\">\n" +
+                                "                      <div class=\"article__image\" style=\"background-image: url(https://gravatar.com/avatar/" + z.text + "?s=125);\"></div>\n" +
+                                "                      <div class=\"article__info\">\n" +
+                                "                        <a href=\"/article.php?id=" + z.articles_id + "\"> " + z.author + "</a>\n" +
+                                "                        <div class=\"article__info__meta\">\n" +
+                                "                        </div>\n" +
+                                "                        <div class=\"article__info__preview\">" + z.text + "</div>\n" +
+                                "                      </div>\n" +
+                                "                    </article>");
+                    } else
+                        out.println("<p>Нет комментариев!</p>\n");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-                out.println("</a></small>\n" +
-                        "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
+                out.println("</div>\n" +
+                        "              </div>\n" +
+                        "            </div>\n" +
+                        "\n" +
+                        "            <div class=\"block\" id=\"comment-add-form\">\n" +
+                        "              <h3>Добавить комментарий</h3>\n" +
+                        "              <div class=\"block__content\">\n" +
+                        "                <form class=\"form\" action = \"postCom\" method = \"post\" #comment-add-form\">\n" +
+                        "                  <div class=\"form__group\">\n" +
+                        "                    <div class=\"row\">\n" +
+                        "                      <div class=\"col-md-4\">\n" +
+                        "                        <input type=\"text\" class=\"form__control\" name=\"name\" placeholder=\"Имя\" value=\"\">\n" +
+                        "                      </div>\n" +
+                        "                      <div class=\"col-md-4\">\n" +
+                        "                        <input type=\"text\" class=\"form__control\" name=\"nickname\" placeholder=\"Никнейм\" value=\"\">\n" +
+                        "                      </div>\n" +
+                        "                      <div class=\"col-md-4\">\n" +
+                        "                        <input type=\"text\" class=\"form__contrSol\" name=\"email\" placeholder=\"Email (не будет показан)\" value=\"\">\n" +
+                        "                      </div>\n" +
+                        "                    </div>\n" +
+                        "                  </div>\n" +
+                        "                  <div class=\"form__group\">\n" +
+                        "                    <textarea name=\"text\" class=\"form__control\" placeholder=\"Текст комментария ...\"></textarea>\n" +
+                        "                  </div>\n" +
+                        "                  <div class=\"form__group\">\n" +
+                        "                    <input type=\"submit\" class=\"form__control\" name=\"do_post\" value=\"Добавить комментарий\">\n" +
+                        "                  </div>\n" +
+                        "                </form>\n" +
+                        "              </div>\n" +
+                        "            </div>\n" +
+                        "\n" +
+                        "          </section>\n");
 
-        out.println("                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles?categorie=1\">Все записи</a>\n" +
-                "              <h3>Космос [Новейшее]</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 1 ORDER BY `id` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> Космос</a></small>\n" +
+            } else {
+                out.println("<div id=\"content\">\n" +
+                        "<div class=\"container\">\n" +
+                        "<div class=\"row\">\n" +
+                        "<section class=\"content__left col-md-8\">\n" +
+                        "<div class=\"block\">\n" +
+                        "<h1>Запрашиваемая Вами статья не существует!</h1>\n" +
+                        "<div class=\"block__content\">\n" +
+                        "<img src=\"https://media.istockphoto.com/vectors/page-concept-not-found-search-result-icon-vector-id833475304?k=20&m=833475304&s=170667a&w=0&h=mqos9lNIrQx3KwCaJaz4B2v6bukLi8jOvbYNJ6srzLs=\" alt=\"Flowers in Chania\">\n" +
+                        "<div class=\"full-text\">\n" +
                         "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
                         "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        out.println("                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles?categorie=2\">Все записи</a>\n" +
-                "              <h3>Программирование [Новейшее]</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 2 ORDER BY `id` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> Программирование</a></small>\n" +
                         "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
+                        "</section>\n");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         out.println(
-                "                </div>\n" +
-                        "              </div>\n" +
-                        "            </div>\n" +
-                        "          </section>\n" +
-                        "          <section class=\"content__right col-md-4\">\n" +
+                "          <section class=\"content__right col-md-4\">\n" +
                         "            <div class=\"block\">\n" +
                         "  <h3>Мы_знаем</h3>\n" +
                         "  <div class=\"block__content\">\n" +
@@ -452,7 +437,7 @@ public class MainPageServlet extends HttpServlet {
                 "  <div class=\"block__content\">\n" +
                 "    <div class=\"articles articles__vertical\">\n");
 
-        resultSet = ArticlesDao.request("SELECT * FROM `comments` ORDER BY `pubdate` DESC LIMIT 5");
+        resultSet = ArticlesDao.request("SELECT * FROM `comments` ORDER BY `pubdate` DESC LIMIT 3");
         try {
             while (resultSet.next()) {
                 Сomments c = new Сomments();
@@ -477,10 +462,10 @@ public class MainPageServlet extends HttpServlet {
         out.println("</div>\n" +
                 "  </div>\n" +
                 "</div>          </section>\n" +
-                "        </div>\n" +
-                "      </div>\n" +
-                "    </div>\n" +
-                "    <footer id=\"footer\">\n" +
+                "</div>\n" +
+                "</div>\n" +
+                "</div>\n" +
+                "<footer id=\"footer\">\n" +
                 "  <div class=\"container\">\n" +
                 "    <div class=\"footer__logo\">\n" +
                 "        <img src=\" https://images-ext-2.discordapp.net/external/XLOMh2NHrsVPCi6sDXF14DBgW-nZ1J3hFcgUJ0hO8g0/https/www.astronews.ru/img/logo.png\" class=\"img\">\n" +
@@ -498,6 +483,5 @@ public class MainPageServlet extends HttpServlet {
                 "</footer>  </div>\n" +
                 "</body>\n" +
                 "</html>");
-
     }
 }

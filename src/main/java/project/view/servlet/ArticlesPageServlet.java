@@ -2,8 +2,6 @@ package project.view.servlet;
 
 import project.view.db.ArticlesDao;
 import project.view.model.Articles;
-import project.view.model.Сomments;
-import project.view.util.MD5Util;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +11,7 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-public class MainPageServlet extends HttpServlet {
+public class ArticlesPageServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         generateView(request, response);
     }
@@ -29,6 +26,9 @@ public class MainPageServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         ResultSet resultSet = null;
         PrintWriter out = response.getWriter();
+        String categorie = request.getParameter("categorie");
+        System.out.println(categorie);
+
         out.println("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -287,18 +287,18 @@ public class MainPageServlet extends HttpServlet {
                 "      </nav>\n" +
                 "    </div>\n" +
                 "  </div>\n" +
-                "</header>\n" +
-                "    <div id=\"content\">\n" +
-                "      <div class=\"container\">\n" +
-                "        <div class=\"row\">\n" +
-                "          <section class=\"content__left col-md-8\">\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles\">Все записи</a>\n" +
-                "              <h3>Новейшее_в_блоге</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
+                "</header>\n");
 
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` ORDER BY `pubdate` DESC LIMIT 10");
+        out.println(" <div id=\"content\">\n" +
+                "        <div class=\"container\">\n" +
+                "          <div class=\"row\">\n" +
+                "            <section class=\"content__left col-md-8\">\n" +
+                "              <div class=\"block\">\n" +
+                "                <a href=\"/articles\">Все записи</a>\n" +
+                "                <h3>Все статьи</h3>\n" +
+                "                <div class=\"block__content\">\n" +
+                "                  <div class=\"articles articles__horizontal\">\n");
+        resultSet = ArticlesDao.request("SELECT * FROM `articles` ORDER BY `pubdate` DESC");
         try {
             while (resultSet.next()) {
                 Articles c = new Articles();
@@ -332,83 +332,19 @@ public class MainPageServlet extends HttpServlet {
                         "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
                         "</div>\n" +
                         "</article>\n");
+
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
 
-        out.println("                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles?categorie=1\">Все записи</a>\n" +
-                "              <h3>Космос [Новейшее]</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 1 ORDER BY `id` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> Космос</a></small>\n" +
-                        "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        out.println("                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles?categorie=2\">Все записи</a>\n" +
-                "              <h3>Программирование [Новейшее]</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 2 ORDER BY `id` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> Программирование</a></small>\n" +
-                        "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         out.println(
                 "                </div>\n" +
                         "              </div>\n" +
-                        "            </div>\n" +
-                        "          </section>\n" +
-                        "          <section class=\"content__right col-md-4\">\n" +
+                        "            </section>\n" +
+                        "<section class=\"content__right col-md-4\">\n" +
                         "            <div class=\"block\">\n" +
                         "  <h3>Мы_знаем</h3>\n" +
                         "  <div class=\"block__content\">\n" +
@@ -447,36 +383,7 @@ public class MainPageServlet extends HttpServlet {
         out.println("</div>\n" +
                 "  </div>\n" +
                 "</div>\n" +
-                "<div class=\"block\">\n" +
-                "  <h3>Комментарии</h3>\n" +
-                "  <div class=\"block__content\">\n" +
-                "    <div class=\"articles articles__vertical\">\n");
-
-        resultSet = ArticlesDao.request("SELECT * FROM `comments` ORDER BY `pubdate` DESC LIMIT 5");
-        try {
-            while (resultSet.next()) {
-                Сomments c = new Сomments();
-                c.author = resultSet.getString("author");
-                c.email = resultSet.getString("email");
-                c.text = resultSet.getString("text");
-                c.articles_id = resultSet.getString("articles_id");
-                out.println("<article class=\"article\">\n" +
-                        "          <div class=\"article__image\" style=\"background-image: url(https://gravatar.com/avatar/" + MD5Util.md5Hex(c.email) + "?s=125);\"></div>\n" +
-                        "          <div class=\"article__info\">\n" +
-                        "            <a href=\"/article?id=" + c.articles_id + "\"> " + c.author + "</a>\n" +
-                        "            <div class=\"article__info__meta\">\n" +
-                        "            </div>\n" +
-                        "            <div class=\"article__info__preview\"> " + c.text + "...</div>\n" +
-                        "          </div>\n" +
-                        "        </article>");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        out.println("</div>\n" +
-                "  </div>\n" +
-                "</div>          </section>\n" +
+                "</section>\n" +
                 "        </div>\n" +
                 "      </div>\n" +
                 "    </div>\n" +

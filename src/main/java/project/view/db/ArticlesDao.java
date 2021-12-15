@@ -28,7 +28,6 @@ public class ArticlesDao {
 
         return null;
     }
-
     public static void update(String sqlMain) {
         DBUtil dbUtil = new DBUtil();
         Connection con = dbUtil.getConnection();

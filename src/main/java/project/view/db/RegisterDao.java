@@ -22,6 +22,7 @@ public class RegisterDao {
             ps.setString(3, member.getEmail());
             ps.setString(4, member.getPhone());
             System.out.println(ps);
+            result = "You are registered successfully!";
             ps.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block

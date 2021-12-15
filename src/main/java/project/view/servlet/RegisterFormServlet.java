@@ -67,7 +67,7 @@ public class RegisterFormServlet extends HttpServlet {
                     "        <br>\n" +
                     "</header>\n" +
                     "<main>\n" +
-                    "  <form action=\"Register\" method=\"post\">\n" +
+                    "<form action=\"Register\" method=\"post\">\n" +
                     "    <label for=\"name\" >User Name:</label><br>\n" +
                     "      <input type=\"text\"  id=\"name\" name=\"uname\" placeholder=\"Введите имя\" ><br>\n" +
                     "       <br>\n" +
@@ -77,11 +77,11 @@ public class RegisterFormServlet extends HttpServlet {
                     "      <input type=\"text\"  id=\"email\" name=\"email\" placeholder=\"Введите почтовый адрес\"><br><br>\n" +
                     "        <label for=\"name\" >Phone:</label><br>\n" +
                     "      <input type=\"text\"  id=\"phone\" name=\"phone\" placeholder=\"Введите телефон\"><br>\n" +
-                    "  </form> \n" +
                     "</main>\n" +
                     "<footer>\n" +
                     "  <br>\n" +
                     "  <button type=\"submit\" value=\"register\" class=\"btn btn-danger\">Регистрация</button>\n" +
+                    "  </form> \n" +
                     " <br>\n" +
                     " <br>\n" +
                     " <p class=\"login\">Уже есть аккаунт? <a href=\"/login\" > Вход</a></p>\n" +

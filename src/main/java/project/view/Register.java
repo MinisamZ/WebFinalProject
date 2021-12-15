@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet implementation class Register
@@ -47,7 +48,22 @@ public class Register extends HttpServlet {
 
         RegisterDao rDao = new RegisterDao();
         String result = rDao.insert(member);
-        response.getWriter().print(result);
+        PrintWriter out = response.getWriter();
+        out.println("<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <title>Блог онлайн</title>\n" +
+                " <body> \n" +
+                "  <script type=\"text/javascript\">\n" +
+                "setTimeout(function() {\n" +
+                "      document.location = \"/main\";\n" +
+                "  }, 5000); // <-- this is the delay in milliseconds\n" +
+                "</script>");
+        out.print(result);
+        out.println(
+                " </body>\n" + "</html>");
+
 
     }
 

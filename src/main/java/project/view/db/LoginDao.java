@@ -2,6 +2,8 @@ package project.view.db;
 
 import project.view.model.Member;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +11,8 @@ import java.sql.SQLException;
 
 public class LoginDao {
 
-    public String verify(Member member) {
+
+    public String verify(Member member, HttpServletRequest request) {
         DBUtil dbUtil = new DBUtil();
         Connection con = dbUtil.getConnection();
         String result = "Data received successfully ";
@@ -32,6 +35,9 @@ public class LoginDao {
                 c.setPhone(resultSet.getString("phone"));
                 result = "Hello " + c.getUname() + "! Your phone: " + c.getPhone() + " and mail: " + c.getEmail();
                 System.out.println("asdasd " + c.toString() + " asdasd");
+                HttpSession session = request.getSession();
+                session.setAttribute("member", c);
+
             } else {
                 System.out.println(false);
             }

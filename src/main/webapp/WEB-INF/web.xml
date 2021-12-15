@@ -56,6 +56,30 @@
         <servlet-name>ArticlesPageServlet</servlet-name>
         <url-pattern>/articles</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>project.view.util.LogOut</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AboutMe</servlet-name>
+        <servlet-class>project.view.servlet.AboutMeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AboutMe</servlet-name>
+        <url-pattern>/about_me</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Copyright</servlet-name>
+        <servlet-class>project.view.servlet.CopyrightPageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Copyright</servlet-name>
+        <url-pattern>/copyright</url-pattern>
+    </servlet-mapping>
     <error-page>
         <error-code>404</error-code>
         <location>/404.html</location>

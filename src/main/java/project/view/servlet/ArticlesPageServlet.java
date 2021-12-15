@@ -1,5 +1,6 @@
 package project.view.servlet;
 
+import project.view.Session;
 import project.view.db.ArticlesDao;
 import project.view.model.Articles;
 
@@ -267,7 +268,7 @@ public class ArticlesPageServlet extends HttpServlet {
                 "      <nav class=\"header__top__menu\">\n" +
                 "        <ul>\n" +
                 "          <li><a href=\"/main\">Главная</a></li>\n" +
-                "          <li><a href=\"/pages/about_me\">Обо мне</a></li>\n" +
+                "          <li><a href=\"/about_me\">Обо мне</a></li>\n" +
                 "          <li><a href=\"http://vk.com/gorgulev2266\" target=\"_blank\">Я Вконтакте</a></li>\n" +
                 "        </ul>\n" +
                 "      </nav>\n" +
@@ -280,9 +281,9 @@ public class ArticlesPageServlet extends HttpServlet {
                 "        <li><a href=\"/articles?categorie=1\" >Космос</a></li>\n" +
                 "        <li><a href=\"/articles?categorie=2\" >Программирование</a></li>\n" +
                 "        <li><a href=\"/articles?categorie=3\" >Игры</a></li>\n" +
-                "\t\t<li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li>\n" +
-                "        <li><a href=\"/login\" >Войти</a></li>\n" +
-                "        <li><a href=\"/register\" >Зарегестрироваться</a></li>\n" +
+                "\t\t<li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li><li> </li>\n");
+        Session s = new Session();
+        out.println(s.checkAccess(request) +
                 "\t\t</ul>\t\t\n" +
                 "      </nav>\n" +
                 "    </div>\n" +
@@ -346,7 +347,7 @@ public class ArticlesPageServlet extends HttpServlet {
                         "            </section>\n" +
                         "<section class=\"content__right col-md-4\">\n" +
                         "            <div class=\"block\">\n" +
-                        "  <h3>Мы_знаем</h3>\n" +
+                        "  <h3>Мы знаем</h3>\n" +
                         "  <div class=\"block__content\">\n" +
                         "    <iframe style=\"background:transparent !important\" scrolling=\"no\" frameborder=\"0\" allowtransparency=\"true\" width=\"320\" height=\"320\" src=\"//ra.revolvermaps.com/w/6/a/c2.php?i=02op3nb0crr&amp;m=7&amp;s=320&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80\"></iframe>\n" +
                         "  </div>\n" +
@@ -395,10 +396,10 @@ public class ArticlesPageServlet extends HttpServlet {
                 "    <nav class=\"footer__menu\">\n" +
                 "      <ul>\n" +
                 "        <li><a href=\"/main\">Главная</a></li>\n" +
-                "        <li><a href=\"/pages/about_me\">Обо мне</a></li>\n" +
+                "        <li><a href=\"/about_me\">Обо мне</a></li>\n" +
                 // not work
                 "        <li><a href=\"http://vk.com/gorgulev2266 \">Я Вконтакте</a></li>\n" +
-                "        <li><a href=\"/pages/copyright\">Правообладателям</a></li>\n" +
+                "        <li><a href=\"/copyright\">Правообладателям</a></li>\n" +
                 "      </ul>\n" +
                 "    </nav>\n" +
                 "  </div>\n" +

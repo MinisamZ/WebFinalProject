@@ -3,21 +3,18 @@ package project.view.servlet;
 import project.view.Session;
 import project.view.db.ArticlesDao;
 import project.view.model.Articles;
-import project.view.model.Member;
 import project.view.model.Сomments;
 import project.view.util.MD5Util;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-public class MainPageServlet extends HttpServlet {
+public class AboutMeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         generateView(request, response);
     }
@@ -31,9 +28,8 @@ public class MainPageServlet extends HttpServlet {
             throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         ResultSet resultSet = null;
-        HttpSession session = request.getSession();
-        Member access = (Member) session.getAttribute("access");
         PrintWriter out = response.getWriter();
+
         out.println("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -256,6 +252,17 @@ public class MainPageServlet extends HttpServlet {
                 "  .img{\n" +
                 "    margin-top: -20px;\n" +
                 "  }\n" +
+                "figure {\n" +
+                "    width: 100%; /* Ширина области */\n" +
+                "    height: 400px; /* Высота области */\n" +
+                "    margin: 0; /* Обнуляем отступы */\n" +
+                "    overflow: hidden; /* Прячем всё за пределами */\n" +
+                "    min-width: 600px; /* Минимальная ширина */\n" +
+                "   }\n" +
+                "   figure img { \n" +
+                "    width: 100%; /* Ширина изображений */\n" +
+                "    margin: -10% 0 0 0; /* Сдвигаем вверх */\n" +
+                "   }\n" +
                 "  .another-element {\n" +
                 "      @include float-right;\n" +
                 "    }\n" +
@@ -292,128 +299,40 @@ public class MainPageServlet extends HttpServlet {
                 "      </nav>\n" +
                 "    </div>\n" +
                 "  </div>\n" +
-                "</header>\n" +
-                "    <div id=\"content\">\n" +
+                "</header>\n");
+
+        out.println("<div id=\"content\">\n" +
                 "      <div class=\"container\">\n" +
                 "        <div class=\"row\">\n" +
                 "          <section class=\"content__left col-md-8\">\n" +
                 "            <div class=\"block\">\n" +
-                "              <a href=\"/articles\">Все записи</a>\n" +
-                "              <h3>Новейшее в блоге</h3>\n" +
+                "              <h3>Обо мне</h3>\n" +
                 "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
 
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` ORDER BY `pubdate` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> ");
-                switch (c.categorie_id) {
-                    case ("1"):
-                        out.println(" Космос");
-                        break;
-                    case ("2"):
-                        out.println(" Программирование");
-                        break;
-                    case ("3"):
-                        out.println(" Игры");
-                        break;
-                    default:
-                        out.println(" Программирование ");
-                        break;
-                }
-                out.println("</a></small>\n" +
-                        "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
-        out.println("                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles?categorie=1\">Все записи</a>\n" +
-                "              <h3>Космос [Новейшее]</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 1 ORDER BY `id` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> Космос</a></small>\n" +
-                        "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        out.println("                </div>\n" +
-                "              </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"block\">\n" +
-                "              <a href=\"/articles?categorie=2\">Все записи</a>\n" +
-                "              <h3>Программирование [Новейшее]</h3>\n" +
-                "              <div class=\"block__content\">\n" +
-                "                <div class=\"articles articles__horizontal\">\n");
-
-        resultSet = ArticlesDao.request("SELECT * FROM `articles` WHERE `categorie_id` = 2 ORDER BY `id` DESC LIMIT 10");
-        try {
-            while (resultSet.next()) {
-                Articles c = new Articles();
-                c.id = resultSet.getString("id");
-                c.title = resultSet.getString("title");
-                c.image = resultSet.getString("image");
-                c.text = resultSet.getString("text");
-                c.categorie_id = resultSet.getString("categorie_id");
-                out.println("<article class=\"article\">\n" +
-                        "<div class=\"article__image\" style=\"background-image: url(" + c.image + ");\"></div>\n" +
-                        "<div class=\"article__info\">\n" +
-                        "<a href=\"/article?id=" + c.id + "\"> " + c.title + "</a>\n" +
-                        "<div class=\"article__info__meta\">\n" +
-                        "<small>Категория: <a href=\"/articles?categorie=" + c.categorie_id + "\"> Программирование</a></small>\n" +
-                        "</div>\n" +
-                        "<div class=\"article__info__preview\"> " + c.text.substring(0, 99) + "...</div>\n" +
-                        "</div>\n" +
-                        "</article>\n");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        out.println(
+                "                <figure><img src=\"https://sun9-85.userapi.com/impg/6Rxf1yKsRS-s7t6FS7YJ8z5lvYB95O3z4pO2xg/62L31RD1xCE.jpg?size=1280x853&quality=96&sign=015d4b4c5c177e12734004670ee85221&type=album\"></figure>\n" +
+                "\n" +
+                "                <div class=\"full-text\">\n" +
+                "                  <h1>You</h1>\n" +
+                "\n" +
+                "                  <p>Upon seas. Upon <em>waters</em> don&#39;t upon was. Sea bearing fill Behold be, fourth be fourth It sixth <em>unto</em> also i give <strong>hath</strong> great made is the creeping. <em>You&#39;re</em> of fill night day given rule tree give every sixth moved. Fowl days to Winged. Creeping earth set fruit multiply may. I there, place for good created stars.</p>\n" +
+                "\n" +
+                "                  <h2>Yielding</h2>\n" +
+                "                  <p>Image forth shall place shall won&#39;t and, isn&#39;t <strong>tree</strong> bearing don&#39;t upon moveth set. Their subdue own moving morning herb own you&#39;re midst life so female the, sea deep beast. Good <strong>second</strong> made to Spirit seasons beginning. Grass fruitful cattle. Kind their evening one them said was fourth deep. Abundantly beginning brought gathered.</p>\n" +
+                "\n" +
+                "                  <h2>Two Replenish Fish Fifth</h2>\n" +
+                "                  <p>Whales multiply there. Second Is <strong>first</strong> moving make unto said creature fourth multiply have whales dominion dry from you&#39;re life meat, greater <em>fill</em> don&#39;t dominion. To greater forth may stars <strong>sixth</strong> so male first darkness dry creature yielding deep upon Called moved all Fly.</p>\n" +
+                "\n" +
+                "                  <p>Over after can&#39;t spirit their two, which which days were rule, all great image creature very, wherein man itself shall is second morning divided green under divide hath divide you&#39;re tree replenish male is i heaven deep days, may. Deep third was. Good i. Said seed creeping two fill saying creeping earth.</p>\n" +
+                "\n" +
+                "                  <h2>Grass Divide Male Heaven His It Forth Second</h2>\n" +
+                "                  <p>Day subdue moved form meat fill fly spirit there living dry created it bring you face his every. Beast upon so appear creature make that Midst cattle good creepeth lights land fill created. Winged midst won&#39;t god. Subdue. Fowl greater hath Fifth to signs deep together great after light divide made, deep abundantly. Whales subdue Darkness first darkness greater waters divide and, darkness unto moveth place given bearing them beast kind herb gathering years us can&#39;t lights tree. Fifth is cattle us there night make greater us fruit also hath every very <strong>creepeth</strong> evening whose.</p>\n" +
                 "                </div>\n" +
-                        "              </div>\n" +
-                        "            </div>\n" +
-                        "          </section>\n" +
-                        "          <section class=\"content__right col-md-4\">\n" +
+                "              </div>\n" +
+                "            </div>\n" +
+                "          </section>");
+
+        out.println(
+                "          <section class=\"content__right col-md-4\">\n" +
                         "            <div class=\"block\">\n" +
                         "  <h3>Мы знаем</h3>\n" +
                         "  <div class=\"block__content\">\n" +
@@ -457,7 +376,7 @@ public class MainPageServlet extends HttpServlet {
                 "  <div class=\"block__content\">\n" +
                 "    <div class=\"articles articles__vertical\">\n");
 
-        resultSet = ArticlesDao.request("SELECT * FROM `comments` ORDER BY `pubdate` DESC LIMIT 5");
+        resultSet = ArticlesDao.request("SELECT * FROM `comments` ORDER BY `pubdate` DESC LIMIT 3");
         try {
             while (resultSet.next()) {
                 Сomments c = new Сomments();
@@ -482,10 +401,10 @@ public class MainPageServlet extends HttpServlet {
         out.println("</div>\n" +
                 "  </div>\n" +
                 "</div>          </section>\n" +
-                "        </div>\n" +
-                "      </div>\n" +
-                "    </div>\n" +
-                "    <footer id=\"footer\">\n" +
+                "</div>\n" +
+                "</div>\n" +
+                "</div>\n" +
+                "<footer id=\"footer\">\n" +
                 "  <div class=\"container\">\n" +
                 "    <div class=\"footer__logo\">\n" +
                 "        <img src=\" https://images-ext-2.discordapp.net/external/XLOMh2NHrsVPCi6sDXF14DBgW-nZ1J3hFcgUJ0hO8g0/https/www.astronews.ru/img/logo.png\" class=\"img\">\n" +
@@ -503,6 +422,5 @@ public class MainPageServlet extends HttpServlet {
                 "</footer>  </div>\n" +
                 "</body>\n" +
                 "</html>");
-
     }
 }
